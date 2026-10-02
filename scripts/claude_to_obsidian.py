@@ -208,12 +208,20 @@ type: chat
 """
 
 
+# Folders whose notes are never link targets: generated code graphs (thousands of notes, one per
+# function), imported chats, and the vault's own system files
+SKIP_DIRS = {"graphify", "chats", "_index", "_system", "_templates"}
+
+# Above this size a chat is imported without wikilinks: one regex per note over megabytes is too slow
+MAX_WIKILINK_CHARS = 2_000_000
+
+
 def collect_vault_notes(vault_dir: Path) -> list[str]:
-    """Collect names of all .md notes in the vault (without extension)."""
+    """Collect names of the hand-written .md notes in the vault (without extension)."""
     notes: list[str] = []
     for md in vault_dir.rglob("*.md"):
         rel = md.relative_to(vault_dir)
-        if any(p.startswith(".") for p in rel.parts):
+        if any(p.startswith(".") for p in rel.parts) or (rel.parts and rel.parts[0] in SKIP_DIRS):
             continue
         name = md.stem
         if len(name) >= 4:
@@ -275,8 +283,8 @@ def process_file(
     mtime = datetime.fromtimestamp(filepath.stat().st_mtime)
     created = mtime.strftime("%Y-%m-%d")
 
-    # Wikilinks
-    if not no_wikilinks:
+    # Wikilinks (skipped on very large chats, see MAX_WIKILINK_CHARS)
+    if not no_wikilinks and len(body) <= MAX_WIKILINK_CHARS:
         body = insert_wikilinks(body, vault_notes)
 
     # Build output
