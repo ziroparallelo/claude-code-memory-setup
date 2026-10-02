@@ -108,9 +108,22 @@ KEYWORD_TAG_MAP = {
     "test": "testing",
     "deploy": "deploy",
 
-    # Add your own project-specific keywords here, e.g.:
-    # "my-app": "my-app",
-    # "client-name": "client-work",
+    # Project-specific keywords (agency)
+    "barbara": "barbara",
+    "odontosalute": "barbara",
+    "confident x": "barbara",
+    "confidentx": "barbara",
+    "sale-pool": "barbara",
+    "thesis-agent": "thesis-agent",
+    "thesis agent": "thesis-agent",
+    "umanizz": "thesis-agent",
+    "mammacomune": "verbalicomune",
+    "verbalicomune": "verbalicomune",
+    "verbali": "verbalicomune",
+    "telnyx": "telnyx",
+    "hetzner": "hetzner",
+    "deepseek": "deepseek",
+    "railway": "railway",
 }
 
 # Short keywords that should match only as whole words (avoid false positives)

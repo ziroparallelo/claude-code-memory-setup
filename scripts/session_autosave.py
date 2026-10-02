@@ -30,7 +30,18 @@ from pathlib import Path
 # CONFIGURATION
 # ============================================================================
 
-DEFAULT_VAULT = Path(os.environ.get("VAULT_DIR", str(Path.home() / "ObsidianVault")))
+DEFAULT_VAULT = Path(os.environ.get("VAULT_DIR", str(Path.home() / "AI AGENCY" / "_VAULT")))
+
+# Repo folder name → vault project folder (the guide suggests symlinks; a map keeps the vault clean)
+PROJECT_ALIASES = {
+    "Barbara Avicolli": "barbara",
+    "wt-regole": "barbara",
+    "thesis-agent": "thesis-agent",
+    "thesis-agent-ui": "thesis-agent",
+    "thesis-agent-ui-landing": "thesis-agent",
+    "mammacomune": "verbalicomune",
+    "verbalicomune": "verbalicomune",
+}
 
 # Skip sessions with fewer user messages than this (avoids noise from
 # trivial "open and close" sessions)
@@ -239,7 +250,9 @@ def main() -> None:
         log(f"SKIP: vault not found at {vault}")
         return
 
-    project = Path(cwd).name
+    raw = Path(cwd).name
+    # A worktree or a sub-folder: the first known project name along the path wins
+    project = next((PROJECT_ALIASES[p] for p in [raw, *Path(cwd).parts[::-1]] if p in PROJECT_ALIASES), raw)
     logs_dir = resolve_logs_dir(vault, project)
 
     try:

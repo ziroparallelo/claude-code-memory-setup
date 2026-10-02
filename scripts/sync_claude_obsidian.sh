@@ -13,7 +13,7 @@
 # CONFIGURATION — edit these paths
 # ============================================================================
 
-VAULT_DIR="$HOME/ObsidianVault"          # path to your Obsidian vault
+VAULT_DIR="$HOME/AI AGENCY/_VAULT"        # path to your Obsidian vault
 EXPORT_DIR="$HOME/claude-exports"        # staging area for exported chats
 SCRIPT_DIR="$HOME/scripts"               # where this script and the .py live
 LOG="$SCRIPT_DIR/claude_obsidian_sync.log"
@@ -25,8 +25,9 @@ mkdir -p "$EXPORT_DIR/code" "$EXPORT_DIR/web"
 echo "[$(date)] Starting sync..." >> "$LOG"
 
 # 1. Export Claude Code chats (requires claude-conversation-extractor)
+RECENT="${RECENT:-20}"                   # how many recent Claude Code sessions to export each run (3140 exist: never --all)
 if command -v claude-extract &> /dev/null; then
-    claude-extract --all --output "$EXPORT_DIR/code" 2>> "$LOG"
+    claude-extract --recent "$RECENT" --output "$EXPORT_DIR/code" 2>> "$LOG"
     echo "[$(date)] Claude Code chats exported" >> "$LOG"
 else
     echo "[$(date)] claude-extract not found — install with:" >> "$LOG"
