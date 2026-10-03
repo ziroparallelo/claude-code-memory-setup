@@ -39,8 +39,14 @@ PROJECT_ALIASES = {
     "thesis-agent": "thesis-agent",
     "thesis-agent-ui": "thesis-agent",
     "thesis-agent-ui-landing": "thesis-agent",
+    "wt-istr": "thesis-agent",
+    "wt-keys": "thesis-agent",
+    "wt-graph": "thesis-agent",
     "mammacomune": "verbalicomune",
     "verbalicomune": "verbalicomune",
+    "MAMMA-COMUNE": "verbalicomune",
+    "MAMMA-COMUNE-ACN": "verbalicomune",
+    "VERBALI COMUNE STAGING": "verbalicomune",
 }
 
 # Skip sessions with fewer user messages than this (avoids noise from
