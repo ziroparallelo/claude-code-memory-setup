@@ -4,8 +4,6 @@
 
 A complete setup to turn Claude Code into an agent with long-term memory and full codebase awareness — without wasting tokens re-reading files.
 
-🇧🇷 [Leia em Português](./README.pt-BR.md)
-
 ---
 
 ## Table of Contents

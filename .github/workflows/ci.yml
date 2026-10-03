@@ -82,21 +82,9 @@ jobs:
             --max-retries 3
             --retry-wait-time 2
             --exclude-all-private
-            README.md README.pt-BR.md CHANGELOG.md scripts/README.md
+            README.md CHANGELOG.md scripts/README.md
           fail: true
           failIfEmpty: true
-
-  readme-parity:
-    name: readme-parity
-    runs-on: ubuntu-latest
-    timeout-minutes: 5
-    steps:
-      - uses: actions/checkout@v7
-      - uses: actions/setup-python@v7
-        with:
-          python-version: "3.11"
-      - name: README.md vs README.pt-BR.md structure
-        run: python .github/scripts/check_parity.py
 
   validate-hook-json:
     name: validate-hook-json
@@ -108,4 +96,4 @@ jobs:
         with:
           python-version: "3.11"
       - name: Validate JSON examples in the guide
-        run: python .github/scripts/check_json_blocks.py README.md README.pt-BR.md CHANGELOG.md scripts/README.md
+        run: python .github/scripts/check_json_blocks.py README.md CHANGELOG.md scripts/README.md

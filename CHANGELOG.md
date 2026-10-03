@@ -14,6 +14,7 @@ setup itself: new components, corrections that change the instructions, and new 
 - Autosave: register `session_autosave.py` under `PreCompact` too, for sessions that never close.
 - Graphify: `.graphifyignore` for debug scripts and archives; global git ignore of `graphify-out/` as an alternative to versioning the graph.
 - Scripts: project aliases for the agency worktrees and the VerbaliComune repositories.
+- The guide is in English only: `README.pt-BR.md` and the README parity check are removed.
 
 ## [1.0.0] - 2026-09-10
 
