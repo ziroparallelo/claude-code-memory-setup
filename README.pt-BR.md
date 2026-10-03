@@ -277,8 +277,9 @@ echo "[$(date)] Sync concluído" >> "$LOG"
 ```bash
 chmod +x ~/scripts/sync_claude_obsidian.sh
 
-# Roda todo dia às 22h
-(crontab -l 2>/dev/null; echo "0 22 * * * $HOME/scripts/sync_claude_obsidian.sh") | crontab -
+# Roda todo dia às 22h. O cron começa com um PATH mínimo: informe as pastas onde estão
+# claude-extract, gitleaks e python3, ou o script não encontra nenhum deles e não importa nada.
+(crontab -l 2>/dev/null; echo "PATH=/opt/homebrew/bin:$HOME/.local/bin:/usr/local/bin:/usr/bin:/bin"; echo "0 22 * * * $HOME/scripts/sync_claude_obsidian.sh") | crontab -
 ```
 
 **6. Para chats do Claude Web:**
@@ -399,6 +400,16 @@ graphify-out/cache/
 ```
 
 Mantenha `graph.json` e `GRAPH_REPORT.md` versionados.
+
+O Graphify lê todos os arquivos de código do repositório, scripts de debug incluídos. Adicione um `.graphifyignore` (mesma sintaxe do `.gitignore`) para manter scripts de debug, arquivos antigos e pastas geradas fora do grafo. Em um projeto, uma pasta `debug/` com milhares de scripts produziu um grafo de 48.000 nós, e o programa em si desapareceu nele:
+
+```gitignore
+# .graphifyignore
+debug/
+_archive/
+```
+
+Se você não quer o grafo no repositório, ignore `graphify-out/` no seu arquivo global de ignore do git (`~/.config/git/ignore`) em vez do `.gitignore` do projeto.
 
 **5. Adicionar ao CLAUDE.md do projeto:**
 
@@ -589,6 +600,25 @@ Se o arquivo já existir, faça merge da chave `hooks` sem remover nada:
 ```
 
 Ajuste o `VAULT_DIR` para o caminho do seu vault.
+
+Se você nunca fecha as sessões (sem `exit`, sem `/clear`), o `SessionEnd` nunca dispara. Registre o mesmo comando também em `PreCompact`. O Claude Code o executa logo antes de compactar uma conversa longa, então uma sessão longa ainda deixa um log:
+
+```json
+{
+  "hooks": {
+    "PreCompact": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "VAULT_DIR=$HOME/vault python3 $HOME/scripts/session_autosave.py"
+          }
+        ]
+      }
+    ]
+  }
+}
+```
 
 **3. Teste:**
 

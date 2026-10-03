@@ -277,8 +277,9 @@ echo "[$(date)] Sync completed" >> "$LOG"
 ```bash
 chmod +x ~/scripts/sync_claude_obsidian.sh
 
-# Run daily at 10 PM
-(crontab -l 2>/dev/null; echo "0 22 * * * $HOME/scripts/sync_claude_obsidian.sh") | crontab -
+# Run daily at 10 PM. cron starts with a minimal PATH: name the folders that hold
+# claude-extract, gitleaks and python3, or the script finds none of them and imports nothing.
+(crontab -l 2>/dev/null; echo "PATH=/opt/homebrew/bin:$HOME/.local/bin:/usr/local/bin:/usr/bin:/bin"; echo "0 22 * * * $HOME/scripts/sync_claude_obsidian.sh") | crontab -
 ```
 
 **6. For Claude Web chats:**
@@ -399,6 +400,16 @@ graphify-out/cache/
 ```
 
 Keep `graph.json` and `GRAPH_REPORT.md` versioned — they're useful for the team.
+
+Graphify reads every code file under the repository, debug scripts included. Add a `.graphifyignore` (same syntax as `.gitignore`) to keep debug scripts, archives and generated folders out of the graph. In one project a `debug/` folder with thousands of scripts produced a graph of 48,000 nodes, and the program itself disappeared in it:
+
+```gitignore
+# .graphifyignore
+debug/
+_archive/
+```
+
+If you do not want the graph in the repository at all, ignore `graphify-out/` in your global git ignore file (`~/.config/git/ignore`) instead of the project `.gitignore`.
 
 **5. Add to the project's CLAUDE.md:**
 
@@ -589,6 +600,25 @@ If the file already exists, merge the `hooks` key without removing anything else
 ```
 
 Adjust `VAULT_DIR` to your vault path.
+
+If you never close your sessions (no `exit`, no `/clear`), `SessionEnd` never fires. Register the same command under `PreCompact` too. Claude Code runs it right before it compacts a long conversation, so a long session still leaves a log:
+
+```json
+{
+  "hooks": {
+    "PreCompact": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "VAULT_DIR=$HOME/vault python3 $HOME/scripts/session_autosave.py"
+          }
+        ]
+      }
+    ]
+  }
+}
+```
 
 **3. Test:**
 

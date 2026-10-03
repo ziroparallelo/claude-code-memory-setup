@@ -8,6 +8,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 Since this is a documentation repository, versions track meaningful changes to the
 setup itself: new components, corrections that change the instructions, and new scripts.
 
+## [Unreleased]
+
+- Cron: the schedule line now sets `PATH`. cron starts with a minimal `PATH`, so `claude-extract`, `gitleaks` and `python3` were not found and the nightly import did nothing.
+- Autosave: register `session_autosave.py` under `PreCompact` too, for sessions that never close.
+- Graphify: `.graphifyignore` for debug scripts and archives; global git ignore of `graphify-out/` as an alternative to versioning the graph.
+- Scripts: project aliases for the agency worktrees and the VerbaliComune repositories.
+
 ## [1.0.0] - 2026-09-10
 
 First tagged release. The setup is complete and covers the full memory lifecycle
